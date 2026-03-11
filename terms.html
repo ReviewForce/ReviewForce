@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Terms of Service — ReviewForce</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g:#3dff8f;--bg:#0a0a0a;--bg2:#0e0e0e;--card:#111;
+  --border:rgba(61,255,143,.1);--borderh:rgba(61,255,143,.25);
+  --text:#b8b8b8;--text2:#e0e0e0;--muted:#505050;--muted2:#2e2e2e;--white:#f0f0f0;
+}
+html{scroll-behavior:smooth}
+body{font-family:"Geist",sans-serif;background:var(--bg);color:var(--text);line-height:1.7}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:.9rem 3rem;display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,10,.93);backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.brand{font-family:"Geist",sans-serif;font-weight:800;font-size:1.15rem;color:var(--white);text-decoration:none;letter-spacing:-.04em}
+.brand em{color:var(--g);font-style:normal}
+.back{display:inline-flex;align-items:center;gap:.5rem;color:var(--muted);font-size:.84rem;text-decoration:none;transition:color .2s;font-weight:500}
+.back:hover{color:var(--g)}
+
+.hero{padding:9rem 2rem 5rem;text-align:center;position:relative;overflow:hidden}
+.hero-orb{position:absolute;top:0;left:50%;transform:translateX(-50%);width:700px;height:400px;background:radial-gradient(ellipse,rgba(61,255,143,.06) 0%,transparent 65%);pointer-events:none}
+.hero h1{font-size:clamp(2.2rem,4vw,3.2rem);font-weight:800;letter-spacing:-.05em;color:var(--white);margin-bottom:.8rem;line-height:1.1;position:relative}
+.hero h1 em{font-style:normal;color:var(--g);font-family:"Instrument Serif",serif;font-weight:400}
+.hero p{color:var(--muted);font-size:.88rem;position:relative}
+.updated{display:inline-block;background:rgba(61,255,143,.07);border:1px solid rgba(61,255,143,.15);color:var(--g);font-size:.71rem;font-weight:600;padding:.25rem .85rem;border-radius:100px;letter-spacing:.06em;margin-top:.8rem}
+
+.content{max-width:760px;margin:0 auto;padding:0 2rem 8rem}
+
+.toc{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:2rem;margin-bottom:3.5rem}
+.toc-title{font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--g);margin-bottom:1.2rem}
+.toc ol{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.35rem;counter-reset:toc}
+.toc li{counter-increment:toc}
+.toc li a{color:var(--muted);font-size:.83rem;text-decoration:none;transition:color .2s;display:flex;align-items:center;gap:.4rem}
+.toc li a::before{content:counter(toc,decimal-leading-zero);font-size:.7rem;color:var(--g);opacity:.7;font-weight:700;flex-shrink:0}
+.toc li a:hover{color:var(--g)}
+
+.clause{margin-bottom:3rem;padding-top:3rem;border-top:1px solid var(--border)}
+.clause:first-of-type{border-top:none;padding-top:0}
+.clause-num{font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--g);margin-bottom:.6rem;display:block}
+.clause h2{font-size:1.25rem;font-weight:700;color:var(--white);margin-bottom:1.2rem;letter-spacing:-.03em}
+.clause p{color:var(--text);font-size:.9rem;line-height:1.85;margin-bottom:.9rem}
+.clause p:last-child{margin-bottom:0}
+.clause ul{list-style:none;display:flex;flex-direction:column;gap:.6rem;padding:0;margin-bottom:.9rem}
+.clause ul li{display:flex;align-items:flex-start;gap:.75rem;font-size:.9rem;color:var(--text);line-height:1.65}
+.clause ul li::before{content:"—";color:var(--g);flex-shrink:0;font-weight:700}
+.clause strong{color:var(--white);font-weight:600}
+.clause a{color:var(--g);text-decoration:none}
+.clause a:hover{text-decoration:underline}
+
+.highlight{background:rgba(61,255,143,.05);border:1px solid rgba(61,255,143,.14);border-radius:12px;padding:1.4rem 1.6rem;margin:1.5rem 0}
+.highlight p{color:var(--text2);font-size:.88rem;margin:0;line-height:1.8}
+
+.meta{border-top:1px solid var(--border);padding-top:2rem;margin-top:3rem}
+.meta p{font-size:.8rem;color:var(--muted);line-height:1.7}
+
+footer{border-top:1px solid var(--border);padding:2rem 3rem;background:var(--bg)}
+.foot{max-width:760px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.foot-copy{color:var(--muted2);font-size:.77rem}
+.foot a{color:var(--muted2);text-decoration:none;font-size:.77rem;transition:color .2s}
+.foot a:hover{color:var(--g)}
+
+@media(max-width:700px){
+  nav{padding:.9rem 1.5rem}
+  .toc ol{grid-template-columns:1fr}
+  .foot{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="brand">Review<em>Force</em></a>
+  <a href="index.html" class="back">← Back to site</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-orb"></div>
+  <h1>Terms of <em>Service</em></h1>
+  <p>Please read these terms before subscribing to ReviewForce.</p>
+  <div class="updated">Last updated: March 2026</div>
+</div>
+
+<div class="content">
+
+  <div class="toc">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li><a href="#s1">About ReviewForce</a></li>
+      <li><a href="#s2">What We Provide</a></li>
+      <li><a href="#s3">Subscriptions & Billing</a></li>
+      <li><a href="#s4">Free Trial</a></li>
+      <li><a href="#s5">Cancellation</a></li>
+      <li><a href="#s6">Your Responsibilities</a></li>
+      <li><a href="#s7">Third-Party Services</a></li>
+      <li><a href="#s8">Limitation of Liability</a></li>
+      <li><a href="#s9">Privacy</a></li>
+      <li><a href="#s10">Governing Law</a></li>
+    </ol>
+  </div>
+
+  <div class="clause" id="s1">
+    <span class="clause-num">01</span>
+    <h2>About ReviewForce</h2>
+    <p>ReviewForce is an AI-powered Google review management service operated in Victoria, Australia. We help small and medium-sized businesses automatically respond to Google reviews using artificial intelligence, posting replies directly to their Google Business Profile on their behalf.</p>
+    <p>By subscribing to ReviewForce, you agree to these Terms of Service in full. If you do not agree, please do not subscribe.</p>
+  </div>
+
+  <div class="clause" id="s2">
+    <span class="clause-num">02</span>
+    <h2>What We Provide</h2>
+    <p>ReviewForce uses <strong>Magic Reply</strong> — a third-party AI platform — to generate review responses, which are then posted to your Google Business Profile through an authorised manager connection.</p>
+    <div class="highlight">
+      <p>Replies are generated by AI and posted automatically without individual human review prior to publishing. You may edit or delete any reply at any time through your Google Business Profile account.</p>
+    </div>
+    <p>Service inclusions by plan:</p>
+    <ul>
+      <li><strong>Starter ($99/mo):</strong> AI replies within 24 hours, up to 50 reviews per month, monthly performance report, email support.</li>
+      <li><strong>Premium ($119/mo):</strong> Unlimited AI replies within approximately 5 minutes, custom brand voice configuration, weekly performance report, 1-star review alerts, priority email support.</li>
+    </ul>
+    <p>ReviewForce reserves the right to modify service features with reasonable notice. Significant reductions in service will be notified in advance and may entitle you to cancel without penalty.</p>
+  </div>
+
+  <div class="clause" id="s3">
+    <span class="clause-num">03</span>
+    <h2>Subscriptions & Billing</h2>
+    <p>Subscriptions are processed monthly through <strong>Whop</strong>, our payment platform. By subscribing, you also agree to Whop's terms of service available at whop.com. All prices are in Australian dollars (AUD) and include GST where applicable.</p>
+    <ul>
+      <li>Subscriptions renew automatically each month unless cancelled before the renewal date.</li>
+      <li>ReviewForce does not store or have access to your payment details — all billing is handled securely by Whop.</li>
+      <li>Refunds are not provided for unused portions of a billing period. If you experience a service failure, contact us and we will resolve it promptly or arrange a credit.</li>
+      <li>Pricing may change with 30 days notice. You may cancel before a price change takes effect with no penalty.</li>
+    </ul>
+  </div>
+
+  <div class="clause" id="s4">
+    <span class="clause-num">04</span>
+    <h2>Free Trial</h2>
+    <p>The Premium plan includes a <strong>3-day free trial</strong>. Your card is not charged during the trial period. Billing begins automatically on day 4 unless you cancel before the trial ends.</p>
+    <p>You may cancel the trial at any time through your Whop account with no charge. We will not pursue payment for a cancelled trial under any circumstance.</p>
+  </div>
+
+  <div class="clause" id="s5">
+    <span class="clause-num">05</span>
+    <h2>Cancellation</h2>
+    <p>You can cancel your ReviewForce subscription at any time — no forms, no phone calls, no notice period required. Simply cancel through your Whop account in a few clicks.</p>
+    <div class="highlight">
+      <p>Cancellation takes effect at the end of your current billing period. There are no cancellation fees, no exit penalties, and no minimum commitment. We believe in earning your business every month.</p>
+    </div>
+    <p>After cancellation, ReviewForce will remove its manager access from your Google Business Profile within 5 business days, or immediately upon request to <a href="mailto:reviewforce.business@gmail.com">reviewforce.business@gmail.com</a>.</p>
+  </div>
+
+  <div class="clause" id="s6">
+    <span class="clause-num">06</span>
+    <h2>Your Responsibilities</h2>
+    <p>By subscribing, you confirm and agree to the following:</p>
+    <ul>
+      <li>You are the authorised owner or manager of the Google Business Profile(s) you connect to ReviewForce.</li>
+      <li>You accept responsibility for content posted under your business name, including AI-generated replies.</li>
+      <li>You will not use ReviewForce to post fake, misleading, or incentivised reviews, or to respond in ways that violate Google's policies or Australian Consumer Law.</li>
+      <li>You will notify ReviewForce promptly at <a href="mailto:reviewforce.business@gmail.com">reviewforce.business@gmail.com</a> if you wish to pause, change, or stop the service.</li>
+      <li>You acknowledge that AI-generated replies are automated and occasional errors may occur. You are responsible for reviewing your replies and can edit them at any time.</li>
+    </ul>
+  </div>
+
+  <div class="clause" id="s7">
+    <span class="clause-num">07</span>
+    <h2>Third-Party Services</h2>
+    <p>ReviewForce depends on the following third-party services to operate:</p>
+    <ul>
+      <li><strong>Magic Reply</strong> — AI reply generation platform</li>
+      <li><strong>Whop</strong> — subscription billing and payment processing</li>
+      <li><strong>Google Business Profile</strong> — the platform on which replies are posted</li>
+    </ul>
+    <p>ReviewForce is not responsible for outages, policy changes, or failures caused by these providers. Service disruptions caused by third parties do not entitle you to a refund, though we will work to resolve issues promptly and transparently.</p>
+  </div>
+
+  <div class="clause" id="s8">
+    <span class="clause-num">08</span>
+    <h2>Limitation of Liability</h2>
+    <p>ReviewForce is provided on a best-efforts basis. While we work hard to deliver a reliable, high-quality service, we make no guarantee of specific outcomes including improvements to your Google rating, local search ranking, or business revenue. Results vary by business and review volume.</p>
+    <p>To the maximum extent permitted by Australian law, ReviewForce's total liability to you in respect of any claim arising under these terms is limited to the subscription fees you paid in the month in which the relevant issue arose.</p>
+    <p>ReviewForce is not liable for any indirect, incidental, or consequential loss, including loss of profits, business, or reputation, except where such liability cannot be excluded under Australian Consumer Law.</p>
+    <p><strong>Nothing in these terms excludes, restricts, or modifies any right or guarantee implied by Australian Consumer Law that cannot lawfully be excluded.</strong></p>
+  </div>
+
+  <div class="clause" id="s9">
+    <span class="clause-num">09</span>
+    <h2>Privacy</h2>
+    <p>ReviewForce collects your business name, email address, and Google Business Profile manager connection solely to deliver the service. We do not sell, share, or monetise your personal data.</p>
+    <ul>
+      <li>Review content is processed by Magic Reply (our AI provider) to generate responses. By using ReviewForce, you consent to this processing.</li>
+      <li>We comply with the <em>Privacy Act 1988</em> (Cth) and the Australian Privacy Principles.</li>
+      <li>You may request access to, correction of, or deletion of your data at any time by contacting <a href="mailto:reviewforce.business@gmail.com">reviewforce.business@gmail.com</a>.</li>
+      <li>On cancellation, we delete your data within 30 days unless required to retain it by law.</li>
+    </ul>
+  </div>
+
+  <div class="clause" id="s10">
+    <span class="clause-num">10</span>
+    <h2>Governing Law</h2>
+    <p>These terms are governed by the laws of Victoria, Australia. Any dispute arising from these terms or the ReviewForce service will be subject to the exclusive jurisdiction of the courts of Victoria.</p>
+    <p>Before initiating any formal dispute process, we encourage you to contact us at <a href="mailto:reviewforce.business@gmail.com">reviewforce.business@gmail.com</a> — most issues can be resolved quickly and informally.</p>
+  </div>
+
+  <div class="meta">
+    <p>These Terms of Service were last updated in March 2026. ReviewForce reserves the right to update these terms at any time. Active subscribers will be notified of material changes before they take effect. Continued use of the service after notification constitutes acceptance of the updated terms.</p>
+    <p style="margin-top:.6rem">Questions: <a href="mailto:reviewforce.business@gmail.com" style="color:var(--g)">reviewforce.business@gmail.com</a> · ReviewForce, Victoria, Australia</p>
+  </div>
+
+</div>
+
+<footer>
+  <div class="foot">
+    <a href="index.html" class="brand" style="font-family:'Geist',sans-serif;font-weight:800;font-size:1.1rem;color:var(--white);text-decoration:none;letter-spacing:-.04em">Review<em style="color:var(--g);font-style:normal">Force</em></a>
+    <div style="display:flex;gap:2rem;flex-wrap:wrap">
+      <a href="index.html">Home</a>
+      <a href="index.html#pricing">Pricing</a>
+      <a href="index.html#faq">FAQ</a>
+      <a href="mailto:reviewforce.business@gmail.com">Contact</a>
+    </div>
+    <div class="foot-copy">© 2026 ReviewForce · Victoria, Australia</div>
+  </div>
+</footer>
+
+</body>
+</html>

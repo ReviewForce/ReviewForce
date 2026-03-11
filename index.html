@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ReviewForce — AI Google Review Replies, Automated</title>
+<meta name="description" content="ReviewForce automatically replies to every Google review using AI — within minutes, 24/7. Built for Australian businesses."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g:#3dff8f;--g2:#5cffaa;
+  --bg:#0a0a0a;--bg2:rgba(14,14,14,.97);--bg3:#131313;
+  --card:#111;--card2:#171717;
+  --border:rgba(61,255,143,.1);--borderh:rgba(61,255,143,.28);
+  --text:#b8b8b8;--text2:#e0e0e0;--muted:#505050;--muted2:#2e2e2e;--white:#f0f0f0;
+}
+html{scroll-behavior:smooth}
+body{font-family:"Geist",sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;background-image:radial-gradient(rgba(61,255,143,.12) 1px,transparent 1px);background-size:28px 28px}
+
+
+/* PROGRESS BAR */
+.progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--g),var(--g2));z-index:600;width:0%;transition:width .1s linear}
+
+/* ─── NAV ─── */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:1.4rem 3rem;display:flex;align-items:center;justify-content:space-between;transition:all .35s}
+nav.s{background:rgba(10,10,10,.93);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:1rem 3rem}
+.brand{font-family:"Geist",sans-serif;font-weight:800;font-size:1.2rem;color:var(--white);text-decoration:none;letter-spacing:-.04em}
+.brand em{color:var(--g);font-style:normal}
+.nl{list-style:none;display:flex;align-items:center;gap:2rem}
+.nl a{color:var(--muted);font-size:.86rem;font-weight:500;text-decoration:none;transition:color .2s}
+.nl a:hover{color:var(--g)}
+.ncta{background:var(--g)!important;color:#000!important;padding:.5rem 1.25rem!important;border-radius:8px;font-weight:700!important;transition:all .2s!important}
+.ncta:hover{background:var(--g2)!important;box-shadow:0 0 28px rgba(61,255,143,.35)!important;transform:translateY(-1px)}
+.hbg{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.hbg span{width:22px;height:2px;background:var(--text);border-radius:2px;transition:all .3s;display:block}
+.hbg.o span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hbg.o span:nth-child(2){opacity:0}
+.hbg.o span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* ─── HERO ─── */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18rem 2rem 12rem;position:relative;overflow:hidden}
+.h-orb{position:absolute;top:44%;left:50%;transform:translate(-50%,-50%);width:1100px;height:750px;background:radial-gradient(ellipse,rgba(61,255,143,.08) 0%,rgba(61,255,143,.02) 38%,transparent 65%);pointer-events:none;animation:glow 8s ease-in-out infinite}
+@keyframes glow{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.07)}}
+.h-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(61,255,143,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(61,255,143,.025) 1px,transparent 1px);background-size:90px 90px;mask-image:radial-gradient(ellipse 60% 50% at 50% 45%,black,transparent);pointer-events:none}
+
+.live-pill{display:inline-flex;align-items:center;gap:.55rem;background:rgba(61,255,143,.07);border:1px solid rgba(61,255,143,.18);border-radius:100px;padding:.42rem 1.1rem;font-size:.76rem;color:var(--g2);font-weight:600;letter-spacing:.05em;margin-bottom:2.5rem;animation:fadein .7s ease both}
+@keyframes fadein{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:translateY(0)}}
+.ldot{width:7px;height:7px;background:var(--g);border-radius:50%;flex-shrink:0;animation:pulse 1.8s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(61,255,143,.5)}70%{box-shadow:0 0 0 9px rgba(61,255,143,0)}100%{box-shadow:0 0 0 0 rgba(61,255,143,0)}}
+
+.hero h1{font-size:clamp(3.2rem,7vw,6.2rem);font-weight:800;line-height:1.02;letter-spacing:-.055em;color:var(--white);max-width:960px;margin-bottom:1.8rem;animation:rise .9s ease .1s both}
+@keyframes rise{from{opacity:0;transform:translateY(38px)}to{opacity:1;transform:translateY(0)}}
+.hero h1 em{font-style:normal;color:var(--g);font-family:"Instrument Serif",serif;font-weight:400;letter-spacing:-.02em}
+.hero-sub{font-size:clamp(1rem,1.8vw,1.14rem);color:var(--muted);max-width:500px;margin-bottom:3.2rem;line-height:1.8;animation:rise .9s ease .22s both}
+
+.hbtns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:4rem;animation:rise .9s ease .38s both}
+.btn-p{background:var(--g);color:#000;padding:1rem 2.4rem;border-radius:10px;font-family:"Geist",sans-serif;font-weight:700;font-size:.95rem;text-decoration:none;display:inline-flex;align-items:center;gap:.5rem;border:none;cursor:pointer;transition:all .2s;letter-spacing:-.02em}
+.btn-p:hover{background:var(--g2);transform:translateY(-2px);box-shadow:0 18px 55px rgba(61,255,143,.3)}
+.btn-p:active{transform:scale(.97)}
+.btn-g{background:transparent;color:var(--text2);padding:1rem 2.4rem;border-radius:10px;font-family:"Geist",sans-serif;font-weight:600;font-size:.95rem;text-decoration:none;border:1px solid rgba(255,255,255,.1);display:inline-flex;align-items:center;gap:.5rem;transition:all .2s;letter-spacing:-.02em}
+.btn-g:hover{border-color:var(--borderh);color:var(--g);transform:translateY(-1px)}
+
+.trust{display:flex;align-items:center;gap:2rem;flex-wrap:wrap;justify-content:center;animation:rise .9s ease .52s both}
+.trust-i{display:flex;align-items:center;gap:.45rem;font-size:.79rem;color:var(--muted2)}
+.trust-i em{color:var(--g);font-style:normal;font-weight:700}
+
+/* ─── TICKER ─── */
+.ticker{overflow:hidden;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:.9rem 0;position:relative;z-index:1}
+.ti{display:flex;gap:3rem;animation:tick 32s linear infinite;white-space:nowrap}
+.tit{display:flex;align-items:center;gap:.6rem;font-size:.78rem;color:var(--muted);font-weight:500;flex-shrink:0}
+.tdot{width:4px;height:4px;background:var(--g);border-radius:50%;opacity:.7}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ─── STATS ─── */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);position:relative;z-index:1}
+.stat{padding:3rem 2rem;text-align:center;border-right:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg2);position:relative;overflow:hidden;transition:background .3s}
+.stat:last-child{border-right:none}
+.stat:hover{background:var(--bg3)}
+.stat::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--g),transparent);transform:scaleX(0);transition:transform .5s}
+.stat:hover::before{transform:scaleX(1)}
+.stat-n{font-size:2.8rem;font-weight:800;color:var(--g);letter-spacing:-.07em;line-height:1;margin-bottom:.4rem}
+.stat-l{font-size:.77rem;color:var(--muted)}
+
+/* ─── SHARED ─── */
+section{position:relative;z-index:1}
+.wrap{max-width:1080px;margin:0 auto;padding:0 2.5rem}
+.tag{display:inline-flex;align-items:center;gap:.5rem;font-size:.7rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--g);margin-bottom:1.1rem}
+.tag::before{content:"";width:16px;height:1.5px;background:var(--g);border-radius:2px}
+h2.t{font-size:clamp(2rem,4vw,3.1rem);font-weight:800;letter-spacing:-.05em;color:var(--white);line-height:1.1;margin-bottom:1rem}
+h2.t em{font-style:normal;color:var(--g);font-family:"Instrument Serif",serif;font-weight:400;letter-spacing:-.02em}
+p.s{color:var(--muted);font-size:.97rem;max-width:480px;line-height:1.75}
+
+/* ─── HOW IT WORKS ─── */
+#how{padding:9rem 0}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-top:4rem}
+.step{background:var(--card);padding:3rem 2.5rem;position:relative;overflow:hidden;transition:background .3s}
+.step:hover{background:var(--card2)}
+.step::after{content:"";position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--g),var(--g2));transform:scaleX(0);transform-origin:left;transition:transform .5s ease}
+.step:hover::after{transform:scaleX(1)}
+.step-n{font-size:5rem;font-weight:800;color:rgba(61,255,143,.07);line-height:1;letter-spacing:-.07em;margin-bottom:.8rem;transition:color .3s}
+.step:hover .step-n{color:rgba(61,255,143,.14)}
+.step-ico{font-size:1.5rem;margin-bottom:.85rem}
+.step h3{font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:.6rem;letter-spacing:-.025em}
+.step p{color:var(--muted);font-size:.87rem;line-height:1.75}
+
+/* ─── DEMO ─── */
+#demo{padding:9rem 0;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.demo-g{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:3.5rem}
+.rc{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.8rem;transition:all .3s}
+.rc:hover{border-color:var(--borderh);transform:translateY(-4px);box-shadow:0 24px 70px rgba(0,0,0,.6)}
+.r-top{display:flex;align-items:center;gap:.9rem;margin-bottom:.85rem}
+.av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.84rem;color:#000;flex-shrink:0}
+.a1{background:linear-gradient(135deg,#3dff8f,#5cffaa)}
+.a2{background:linear-gradient(135deg,#40c4ff,#80d8ff)}
+.a3{background:linear-gradient(135deg,#ffd740,#ffe57f)}
+.a4{background:linear-gradient(135deg,#ea80fc,#ce93d8)}
+.r-name{font-weight:600;font-size:.88rem;color:var(--white)}
+.r-time{font-size:.71rem;color:var(--muted2);margin-top:1px}
+.r-stars{color:#ffd740;font-size:.8rem;margin-bottom:.6rem;letter-spacing:1px}
+.r-text{color:var(--muted);font-size:.86rem;font-style:italic;line-height:1.7;margin-bottom:1.2rem}
+.r-reply{background:rgba(61,255,143,.05);border:1px solid rgba(61,255,143,.13);border-radius:10px;padding:1rem 1.2rem}
+.r-label{font-size:.67rem;font-weight:700;color:var(--g);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.45rem}
+.r-body{color:var(--text2);font-size:.86rem;line-height:1.7}
+
+/* ─── WHO ─── */
+#who{padding:9rem 0}
+.who-g{display:grid;grid-template-columns:repeat(6,1fr);gap:1rem;margin-top:3.5rem}
+.wc{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.8rem 1.2rem;transition:all .3s;text-align:center}
+.wc:hover{border-color:var(--borderh);transform:translateY(-4px)}
+.w-ico{font-size:1.8rem;margin-bottom:.7rem}
+.wc h3{font-size:.83rem;font-weight:700;color:var(--white);letter-spacing:-.02em;line-height:1.3}
+
+/* ─── FEATURES ─── */
+#features{padding:9rem 0;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.feat-g{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3.5rem}
+.fc{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:2rem;transition:all .3s;position:relative;overflow:hidden}
+.fc:hover{border-color:var(--borderh);transform:translateY(-3px)}
+.fc::before{content:"";position:absolute;top:-20px;right:-20px;width:80px;height:80px;background:radial-gradient(circle,rgba(61,255,143,.07),transparent 70%);opacity:0;transition:opacity .3s}
+.fc:hover::before{opacity:1}
+.f-ico{font-size:1.4rem;margin-bottom:.85rem}
+.fc h3{font-size:.94rem;font-weight:700;color:var(--white);margin-bottom:.5rem;letter-spacing:-.025em}
+.fc p{color:var(--muted);font-size:.86rem;line-height:1.75}
+
+/* ─── RESULTS ─── */
+#results{padding:9rem 0}
+.res-g{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.res-nums{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.rn{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:2rem;text-align:center;transition:all .3s}
+.rn:hover{border-color:var(--borderh);transform:scale(1.04)}
+.rn-v{font-size:2.3rem;font-weight:800;color:var(--g);letter-spacing:-.06em;margin-bottom:.35rem}
+.rn-l{font-size:.77rem;color:var(--muted);line-height:1.45}
+.res-text p{color:var(--muted);font-size:.95rem;line-height:1.85;margin-bottom:1.2rem}
+.res-text p strong{color:var(--text2);font-weight:600}
+
+/* ─── PRICING ─── */
+#pricing{padding:9rem 0;background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.ph{text-align:center;margin-bottom:3.5rem}
+.ph .tag{justify-content:center}
+.ph .tag::before{display:none}
+.ph .s{margin:0 auto}
+.price-g{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:800px;margin:0 auto}
+.plan{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2.8rem;position:relative;transition:all .3s;text-align:left}
+.plan-h{border-color:rgba(61,255,143,.3);background:linear-gradient(145deg,var(--card),rgba(61,255,143,.035))}
+.plan:hover{transform:translateY(-4px)}
+.plan-h:hover{box-shadow:0 35px 90px rgba(61,255,143,.1)}
+.hbadge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--g);color:#000;font-size:.67rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:.3rem 1.2rem;border-radius:100px;white-space:nowrap}
+.pn{font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:1.3rem}
+.po{font-size:.8rem;color:var(--muted2);text-decoration:line-through;margin-bottom:.3rem}
+.pp{display:flex;align-items:baseline;gap:.15rem;margin-bottom:.5rem}
+.ps{font-size:1.2rem;font-weight:800;color:var(--white);align-self:flex-start;margin-top:.5rem}
+.pa{font-size:3.5rem;font-weight:800;color:var(--white);letter-spacing:-.07em;line-height:1}
+.pper{font-size:.83rem;color:var(--muted);align-self:flex-end;margin-bottom:.2rem}
+.ptag{display:inline-block;background:rgba(61,255,143,.1);color:var(--g);border:1px solid rgba(61,255,143,.22);font-size:.7rem;font-weight:700;padding:.22rem .7rem;border-radius:5px;margin-bottom:1.8rem}
+.pdiv{border:none;border-top:1px solid var(--border);margin:1.8rem 0}
+.pf{list-style:none;display:flex;flex-direction:column;gap:.9rem;margin-bottom:2.2rem}
+.pf li{display:flex;align-items:flex-start;gap:.75rem;font-size:.87rem;color:var(--muted);line-height:1.5}
+.ck{color:var(--g);font-weight:800;flex-shrink:0}
+.pnote{text-align:center;font-size:.73rem;color:var(--muted2);margin-top:1rem}
+.pfooter{text-align:center;margin-top:2.5rem;color:var(--muted);font-size:.84rem}
+.pfooter a{color:var(--g);text-decoration:none}
+
+/* ─── FAQ ─── */
+#faq{padding:9rem 0}
+.faq-l{max-width:660px;border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:3.5rem}
+.fi{border-bottom:1px solid var(--border);background:var(--card)}
+.fi:last-child{border-bottom:none}
+.fq{padding:1.35rem 1.8rem;font-weight:600;font-size:.91rem;color:var(--white);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem;user-select:none;transition:color .2s,background .2s}
+.fq:hover{color:var(--g);background:var(--card2)}
+.fic{color:var(--g);font-size:1.3rem;transition:transform .35s cubic-bezier(.34,1.56,.64,1);flex-shrink:0;line-height:1}
+.fa{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.fai{padding:0 1.8rem 1.4rem;color:var(--muted);font-size:.87rem;line-height:1.8;border-top:1px solid var(--border);padding-top:1.1rem}
+.fi.open .fa{max-height:300px}
+.fi.open .fic{transform:rotate(45deg)}
+.fi.open .fq{color:var(--g)}
+
+/* ─── CTA ─── */
+#cta{padding:10rem 0;text-align:center;position:relative;overflow:hidden}
+.cta-orb{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:900px;height:600px;background:radial-gradient(ellipse,rgba(61,255,143,.08) 0%,transparent 65%);pointer-events:none;animation:glow 7s ease-in-out infinite}
+.cta-rings{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.cr{position:absolute;border-radius:50%;border:1px solid rgba(61,255,143,.06);animation:rp 5s ease-in-out infinite}
+.cr:nth-child(1){width:350px;height:350px;margin:-175px 0 0 -175px}
+.cr:nth-child(2){width:600px;height:600px;margin:-300px 0 0 -300px;animation-delay:1.2s}
+.cr:nth-child(3){width:850px;height:850px;margin:-425px 0 0 -425px;animation-delay:2.4s}
+@keyframes rp{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:.8;transform:scale(1.04)}}
+#cta h2{font-size:clamp(2.6rem,5.5vw,4.4rem);font-weight:800;letter-spacing:-.055em;color:var(--white);margin-bottom:1.3rem;line-height:1.07;position:relative}
+#cta h2 em{font-style:normal;color:var(--g);font-family:"Instrument Serif",serif;font-weight:400}
+#cta p{color:var(--muted);font-size:1rem;max-width:420px;margin:0 auto 3rem;line-height:1.78;position:relative}
+.cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.8rem;position:relative}
+.cta-note{font-size:.77rem;color:var(--muted2);position:relative}
+.cta-note a{color:var(--g);text-decoration:none}
+
+
+
+/* ─── TOAST ─── */
+.toast{position:fixed;bottom:2.5rem;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(17,17,17,.97);border:1px solid var(--g);border-radius:10px;padding:.65rem 1.4rem;font-size:.82rem;color:var(--g);font-weight:600;z-index:600;transition:transform .4s cubic-bezier(.34,1.56,.64,1);pointer-events:none;white-space:nowrap;backdrop-filter:blur(12px)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ─── RIPPLE ─── */
+.ripple{position:fixed;border-radius:50%;background:rgba(61,255,143,.1);pointer-events:none;animation:rip .6s ease-out forwards;z-index:9000}
+@keyframes rip{from{transform:scale(0);opacity:1}to{transform:scale(4);opacity:0}}
+
+/* ─── FADE UP ─── */
+.fu{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}
+.fu.v{opacity:1;transform:translateY(0)}
+
+@media(max-width:900px){
+  .terms-grid{grid-template-columns:1fr}
+  #terms{padding:5rem 0 3rem}
+}
+
+/* ─── MOBILE ─── */
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem}
+  nav.s{padding:.8rem 1.5rem}
+  .nl{display:none;flex-direction:column;position:fixed;top:61px;left:0;right:0;background:rgba(10,10,10,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:1.5rem 2rem 2rem;gap:1.4rem}
+  .nl.open{display:flex}
+  .hbg{display:flex}
+  .stats{grid-template-columns:1fr 1fr}
+  .stat:nth-child(2){border-right:none}
+  .stat:nth-child(3){border-right:1px solid var(--border)}
+  .stat:nth-child(3),.stat:nth-child(4){border-bottom:none}
+  .steps,.demo-g,.feat-g,.res-g{grid-template-columns:1fr}
+  .terms-grid{grid-template-columns:1fr}
+  .who-g{grid-template-columns:repeat(3,1fr)}
+  .price-g{grid-template-columns:1fr;max-width:420px}
+  .foot{flex-direction:column;align-items:flex-start}
+}
+@media(max-width:560px){
+  .hbtns,.cta-btns{flex-direction:column;align-items:stretch}
+  .who-g{grid-template-columns:repeat(2,1fr)}
+}
+
+
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<div class="toast" id="toast"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="brand">Review<em>Force</em></a>
+  <ul class="nl" id="nl">
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#faq">FAQ</a></li>
+
+    <li><a href="#pricing" class="ncta">Start Free Trial</a></li>
+  </ul>
+  <div class="hbg" id="hbg"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="h-orb"></div>
+  <div class="h-grid"></div>
+  <div class="live-pill"><span class="ldot"></span>Now live for Australian businesses</div>
+  <h1>Your Google reviews,<br><em>replied to automatically.</em></h1>
+  <p class="hero-sub">ReviewForce connects to your Google Business Profile and replies to every review using AI — within minutes, around the clock. Set it up once. Never think about it again.</p>
+  <div class="hbtns">
+    <a href="https://whop.com/checkout/plan_bXEeiRTNPQi4S" class="btn-p" id="heroCta">Start 3-Day Free Trial →</a>
+    <a href="#how" class="btn-g">See How It Works</a>
+  </div>
+  <div class="trust">
+    <span class="trust-i"><em>✓</em> No contracts</span>
+    <span class="trust-i"><em>✓</em> Cancel anytime</span>
+    <span class="trust-i"><em>✓</em> Setup under 1 hour</span>
+    <span class="trust-i"><em>✓</em> Built for Australia</span>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker"><div class="ti">
+  <span class="tit"><span class="tdot"></span>50,000+ reviews replied to</span>
+  <span class="tit"><span class="tdot"></span>Under 5 min average reply time</span>
+  <span class="tit"><span class="tdot"></span>100% invisible to customers</span>
+  <span class="tit"><span class="tdot"></span>24/7 automation</span>
+  <span class="tit"><span class="tdot"></span>Boosts local SEO</span>
+  <span class="tit"><span class="tdot"></span>No passwords ever shared</span>
+  <span class="tit"><span class="tdot"></span>Built for Australia</span>
+  <span class="tit"><span class="tdot"></span>Cancel anytime</span>
+  <span class="tit"><span class="tdot"></span>50,000+ reviews replied to</span>
+  <span class="tit"><span class="tdot"></span>Under 5 min average reply time</span>
+  <span class="tit"><span class="tdot"></span>100% invisible to customers</span>
+  <span class="tit"><span class="tdot"></span>24/7 automation</span>
+  <span class="tit"><span class="tdot"></span>Boosts local SEO</span>
+  <span class="tit"><span class="tdot"></span>No passwords ever shared</span>
+  <span class="tit"><span class="tdot"></span>Built for Australia</span>
+  <span class="tit"><span class="tdot"></span>Cancel anytime</span>
+</div></div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat fu"><div class="stat-n">50K+</div><div class="stat-l">Reviews Replied To</div></div>
+  <div class="stat fu"><div class="stat-n">&lt;5 min</div><div class="stat-l">Average Reply Time</div></div>
+  <div class="stat fu"><div class="stat-n">24/7</div><div class="stat-l">Always Running</div></div>
+  <div class="stat fu"><div class="stat-n">100%</div><div class="stat-l">Invisible to Customers</div></div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="wrap">
+    <div class="fu"><div class="tag">How It Works</div>
+      <h2 class="t">Three steps. Then it runs <em>itself.</em></h2>
+      <p class="s">No technical setup. No passwords. Zero ongoing effort from you.</p>
+    </div>
+    <div class="steps">
+      <div class="step fu">
+        <div class="step-n">01</div><div class="step-ico">🔗</div>
+        <h3>Connect your profile</h3>
+        <p>Add ReviewForce as a manager on your Google Business Profile. Takes 2 minutes. You never share a password — full ownership stays with you always.</p>
+      </div>
+      <div class="step fu">
+        <div class="step-n">02</div><div class="step-ico">🎨</div>
+        <h3>Set your tone</h3>
+        <p>Tell us how you want to sound. The AI calibrates to your brand voice so every reply feels personally written — professional, warm, or casual.</p>
+      </div>
+      <div class="step fu">
+        <div class="step-n">03</div><div class="step-ico">🚀</div>
+        <h3>Let it run</h3>
+        <p>Every new review is replied to within minutes. Day, night, weekends, public holidays. Your reputation grows on autopilot.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE DEMO -->
+<section id="demo">
+  <div class="wrap">
+    <div class="fu"><div class="tag">Live Examples</div>
+      <h2 class="t">Replies that sound <em>human.</em></h2>
+      <p class="s">Contextual, on-brand, posted instantly under your business name. Customers never know it's AI.</p>
+    </div>
+    <div class="demo-g">
+      <div class="rc fu">
+        <div class="r-top"><div class="av a1">S</div><div><div class="r-name">Sarah T.</div><div class="r-time">2 min ago</div></div></div>
+        <div class="r-stars">★★★★★</div>
+        <div class="r-text">"Best coffee I've had all year. Team was so welcoming, whole vibe is perfect. Back every week."</div>
+        <div class="r-reply"><div class="r-label">⚡ Replied automatically</div><div class="r-body">Thank you so much, Sarah — this made our whole team's day! We love hearing the atmosphere and coffee hit the mark. We'll have your usual ready! ☕</div></div>
+      </div>
+      <div class="rc fu">
+        <div class="r-top"><div class="av a2">M</div><div><div class="r-name">Marcus R.</div><div class="r-time">1 hr ago</div></div></div>
+        <div class="r-stars">★★★☆☆</div>
+        <div class="r-text">"Good food but wait was longer than expected Friday evening. Would still come back."</div>
+        <div class="r-reply"><div class="r-label">⚡ Replied automatically</div><div class="r-body">Hi Marcus, thanks for the honest feedback — Fridays do get busy and we're always working to improve. Really appreciate your patience, hope to see you again soon!</div></div>
+      </div>
+      <div class="rc fu">
+        <div class="r-top"><div class="av a3">L</div><div><div class="r-name">Laura K.</div><div class="r-time">3 hrs ago</div></div></div>
+        <div class="r-stars">★★★★★</div>
+        <div class="r-text">"Made me feel completely at ease. Professional, spotless clinic, whole experience was stress-free."</div>
+        <div class="r-reply"><div class="r-label">⚡ Replied automatically</div><div class="r-body">That means everything to us, Laura! Making patients feel comfortable is exactly what we strive for. Looking forward to seeing you at your next visit. 😊</div></div>
+      </div>
+      <div class="rc fu">
+        <div class="r-top"><div class="av a4">J</div><div><div class="r-name">James W.</div><div class="r-time">5 hrs ago</div></div></div>
+        <div class="r-stars">★★★★☆</div>
+        <div class="r-text">"Great food and atmosphere. Parking tricky but once inside the experience was excellent."</div>
+        <div class="r-reply"><div class="r-label">⚡ Replied automatically</div><div class="r-body">Thanks so much, James! We hear you on parking — council carpark on Smith St is usually easy. Can't wait to welcome you back! 🙌</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO IT'S FOR -->
+<section id="who">
+  <div class="wrap">
+    <div class="fu"><div class="tag">Who It's For</div>
+      <h2 class="t">Built for any business that <em>gets reviewed.</em></h2>
+    </div>
+    <div class="who-g">
+      <div class="wc fu"><div class="w-ico">☕</div><h3>Cafes & Coffee Shops</h3></div>
+      <div class="wc fu"><div class="w-ico">🦷</div><h3>Dental & Medical</h3></div>
+      <div class="wc fu"><div class="w-ico">🍽️</div><h3>Restaurants & Bars</h3></div>
+      <div class="wc fu"><div class="w-ico">🏋️</div><h3>Gyms & Fitness</h3></div>
+      <div class="wc fu"><div class="w-ico">🏠</div><h3>Trades & Services</h3></div>
+      <div class="wc fu"><div class="w-ico">💈</div><h3>Salons & Beauty</h3></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="wrap">
+    <div class="fu"><div class="tag">Features</div>
+      <h2 class="t">Everything included. <em>Nothing extra.</em></h2>
+    </div>
+    <div class="feat-g">
+      <div class="fc fu"><div class="f-ico">⚡</div><h3>Replies in under 5 minutes</h3><p>Premium plan responds to every review fast — day or night, weekdays and weekends, 365 days without exception.</p></div>
+      <div class="fc fu"><div class="f-ico">🎭</div><h3>Completely invisible</h3><p>Posts directly from your Google account under your business name. No mention of ReviewForce or AI, ever.</p></div>
+      <div class="fc fu"><div class="f-ico">📈</div><h3>Boosts local SEO</h3><p>Google rewards businesses that engage with reviews. More replies means higher local search rankings — more customers finding you.</p></div>
+      <div class="fc fu"><div class="f-ico">🔔</div><h3>1-star alerts</h3><p>Instant notification when a 1-star review lands so you can personally step in when it matters most. Premium plan.</p></div>
+      <div class="fc fu"><div class="f-ico">🎨</div><h3>Custom brand voice</h3><p>Set your tone once — formal, friendly, casual — and every reply sounds like you wrote it yourself.</p></div>
+      <div class="fc fu"><div class="f-ico">📊</div><h3>Performance reports</h3><p>Regular reports on review volume, reply rate, and rating trends. Monthly on Starter, weekly on Premium.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="results">
+  <div class="wrap">
+    <div class="res-g">
+      <div class="fu">
+        <div class="tag">Why It Matters</div>
+        <h2 class="t">Responding to reviews <em>works.</em></h2>
+        <div class="res-text" style="margin-top:1.5rem">
+          <p>Most small business owners don't have time to reply to reviews consistently. They pile up, stay unanswered, and your profile looks neglected compared to competitors who do respond.</p>
+          <p><strong>ReviewForce solves this entirely.</strong> Every review gets a thoughtful, personalised reply automatically — so your profile always looks engaged and professional, without any effort from you.</p>
+          <p>Google actively surfaces businesses that engage with customers. Replying to reviews isn't just good customer service — it's <strong>free SEO</strong>.</p>
+        </div>
+      </div>
+      <div class="res-nums fu">
+        <div class="rn"><div class="rn-v">+0.6★</div><div class="rn-l">Average rating improvement</div></div>
+        <div class="rn"><div class="rn-v">8–12hrs</div><div class="rn-l">Saved per month on average</div></div>
+        <div class="rn"><div class="rn-v">98%</div><div class="rn-l">Review reply rate achieved</div></div>
+        <div class="rn"><div class="rn-v">&lt;1hr</div><div class="rn-l">From sign-up to fully live</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="wrap">
+    <div class="ph fu">
+      <div class="tag">Pricing</div>
+      <h2 class="t">Simple, transparent <em>pricing.</em></h2>
+      <p class="s">No contracts. No setup fees. Cancel anytime.</p>
+    </div>
+    <div class="price-g">
+      <div class="plan fu">
+        <div class="pn">Starter</div>
+        <div class="po">Was $143 / month</div>
+        <div class="pp"><span class="ps">$</span><span class="pa">99</span><span class="pper">/ month</span></div>
+        <span class="ptag">30% OFF launch price</span>
+        <hr class="pdiv"/>
+        <ul class="pf">
+          <li><span class="ck">✓</span>AI replies within 24 hours</li>
+          <li><span class="ck">✓</span>Up to 50 reviews per month</li>
+          <li><span class="ck">✓</span>Monthly performance report</li>
+          <li><span class="ck">✓</span>Email support</li>
+          <li><span class="ck">✓</span>Cancel anytime</li>
+        </ul>
+        <a href="https://whop.com/checkout/plan_7GkNu6CAkFmSX" class="btn-g" style="display:block;text-align:center;width:100%">Join Now →</a>
+        <div class="pnote">Billed monthly · No contracts</div>
+      </div>
+      <div class="plan plan-h fu">
+        <span class="hbadge">Most Popular</span>
+        <div class="pn">Premium</div>
+        <div class="po">Was $171 / month</div>
+        <div class="pp"><span class="ps">$</span><span class="pa">119</span><span class="pper">/ month</span></div>
+        <span class="ptag">30% OFF · 3-day free trial</span>
+        <hr class="pdiv"/>
+        <ul class="pf">
+          <li><span class="ck">✓</span>Everything in Starter</li>
+          <li><span class="ck">✓</span><strong style="color:var(--white)">Unlimited</strong> review replies</li>
+          <li><span class="ck">✓</span>Instant reply — under 5 minutes</li>
+          <li><span class="ck">✓</span>Custom brand tone & voice</li>
+          <li><span class="ck">✓</span>Weekly performance report</li>
+          <li><span class="ck">✓</span>1-star review alerts</li>
+          <li><span class="ck">✓</span>Priority support</li>
+        </ul>
+        <a href="https://whop.com/checkout/plan_bXEeiRTNPQi4S" class="btn-p" style="display:block;text-align:center;width:100%" id="pricingCta">Start Free Trial →</a>
+        <div class="pnote">3-day free trial · No charge until day 4</div>
+      </div>
+    </div>
+    <p class="pfooter">Questions? <a href="mailto:reviewforce.business@gmail.com">reviewforce.business@gmail.com</a></p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="fu"><div class="tag">FAQ</div>
+      <h2 class="t">Common <em>questions.</em></h2>
+    </div>
+    <div class="faq-l fu">
+      <div class="fi"><div class="fq">Is it safe to give ReviewForce access to my Google profile? <span class="fic">+</span></div><div class="fa"><div class="fai">Completely. You add ReviewForce as a manager on your Google Business Profile — you never share your password. You retain full ownership and can remove access instantly at any time from your Google account settings.</div></div></div>
+      <div class="fi"><div class="fq">Will my customers know it's AI? <span class="fic">+</span></div><div class="fa"><div class="fai">No. Replies post from your Google account under your business name. The AI is calibrated to your brand voice so responses feel natural and personal. There is no mention of ReviewForce or AI visible to customers — ever.</div></div></div>
+      <div class="fi"><div class="fq">Can I edit a reply after it's posted? <span class="fic">+</span></div><div class="fa"><div class="fai">Yes. Since replies post from your own Google account, you can log into Google Business Profile at any time and edit or delete any response. You always have full control.</div></div></div>
+      <div class="fi"><div class="fq">What happens with a 1-star review? <span class="fic">+</span></div><div class="fa"><div class="fai">On Premium, you get an instant alert the moment a 1-star review comes in so you can personally step in. The AI still posts a professional, empathetic response automatically while you assess the situation.</div></div></div>
+      <div class="fi"><div class="fq">How do I cancel? <span class="fic">+</span></div><div class="fa"><div class="fai">Cancel anytime through your Whop account — a few clicks, no forms, no calls. No contracts, no fees, no minimum commitment. Your subscription won't renew after the current billing cycle.</div></div></div>
+      <div class="fi"><div class="fq">Is this compliant with Google's policies? <span class="fic">+</span></div><div class="fa"><div class="fai">Yes. ReviewForce replies on your behalf as an authorised manager of your Google Business Profile — the same way a staff member or marketing agency would. Fully within Google's permitted use policies.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-orb"></div>
+  <div class="cta-rings"><div class="cr"></div><div class="cr"></div><div class="cr"></div></div>
+  <div class="wrap" style="position:relative">
+    <h2 class="fu">Your reviews,<br><em>sorted forever.</em></h2>
+    <p class="fu">Set up in under an hour. Works while you sleep. No contracts, no effort.</p>
+    <div class="cta-btns fu">
+      <a href="https://whop.com/checkout/plan_bXEeiRTNPQi4S" class="btn-p">Start Free Trial — Premium →</a>
+      <a href="https://whop.com/checkout/plan_7GkNu6CAkFmSX" class="btn-g">Join — Starter Plan</a>
+    </div>
+    <div class="cta-note fu">No contracts · Cancel anytime · <a href="mailto:reviewforce.business@gmail.com">reviewforce.business@gmail.com</a></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot">
+    <a href="#" class="brand">Review<em>Force</em></a>
+    <ul class="foot-links">
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="terms.html">Terms of Service</a></li>
+      <li><a href="mailto:reviewforce.business@gmail.com">Contact</a></li>
+    </ul>
+    <div class="foot-copy">© 2026 ReviewForce · Victoria, Australia · AI-powered review management</div>
+  </div>
+</footer>
+
+<script>
+
+// PROGRESS BAR
+window.addEventListener('scroll', () => {
+  const el = document.getElementById('progress');
+  if(!el) return;
+  const pct = (scrollY / (document.body.scrollHeight - innerHeight)) * 100;
+  el.style.width = Math.min(pct, 100) + '%';
+}, {passive:true});
+
+// AUDIO
+const AC=window.AudioContext||window.webkitAudioContext;
+let ac=null;
+function gac(){if(!ac)ac=new AC();return ac;}
+function tone(f,type,dur,vol){
+  try{const a=gac(),o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);o.type=type||"sine";o.frequency.setValueAtTime(f,a.currentTime);o.frequency.exponentialRampToValueAtTime(f*.88,a.currentTime+dur);g.gain.setValueAtTime(vol,a.currentTime);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+dur);o.start();o.stop(a.currentTime+dur);}catch(e){}
+}
+function sfxClick(){tone(880,"sine",.07,.08);}
+function sfxHover(){tone(1200,"sine",.04,.04);}
+function sfxFaq(){tone(660,"triangle",.09,.07);}
+function sfxSuccess(){[523,659,784].forEach((f,i)=>setTimeout(()=>tone(f,"sine",.18,.07),i*55));setTimeout(()=>tone(1047,"sine",.25,.08),200);}
+
+// RIPPLE
+document.addEventListener("click",e=>{
+  const r=document.createElement("div");
+  r.className="ripple";r.style.cssText=`left:${e.clientX-20}px;top:${e.clientY-20}px;width:40px;height:40px`;
+  document.body.appendChild(r);setTimeout(()=>r.remove(),650);
+});
+
+// NAV
+const hbg=document.getElementById("hbg"),nl=document.getElementById("nl");
+hbg.addEventListener("click",()=>{hbg.classList.toggle("o");nl.classList.toggle("open");sfxClick();});
+nl.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{hbg.classList.remove("o");nl.classList.remove("open");}));
+window.addEventListener("scroll",()=>document.getElementById("nav").classList.toggle("s",scrollY>50),{passive:true});
+
+// SCROLL ANIM
+const obs=new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(e.isIntersecting){
+      const idx=Array.from(e.target.parentElement.querySelectorAll(".fu")).indexOf(e.target);
+      setTimeout(()=>e.target.classList.add("v"),idx*90);
+    }
+  });
+},{threshold:.08,rootMargin:"0px 0px -30px 0px"});
+document.querySelectorAll(".fu").forEach(el=>obs.observe(el));
+
+// FAQ
+document.querySelectorAll(".fq").forEach(q=>{
+  q.addEventListener("click",()=>{
+    const it=q.parentElement,open=it.classList.contains("open");
+    document.querySelectorAll(".fi.open").forEach(i=>i.classList.remove("open"));
+    if(!open){it.classList.add("open");sfxFaq();}
+  });
+});
+
+// HOVER SOUNDS
+document.querySelectorAll(".btn-p,.btn-g,.ncta").forEach(el=>{
+  el.addEventListener("mouseenter",sfxHover);
+  el.addEventListener("click",sfxClick);
+});
+
+// TOAST
+function showToast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2400);}
+
+// CTA sounds
+document.getElementById("heroCta")?.addEventListener("click",()=>{sfxSuccess();showToast("🚀 Starting your free trial!");});
+document.getElementById("pricingCta")?.addEventListener("click",()=>{sfxSuccess();showToast("🚀 Starting your free trial!");});
+
+
+// MAGNETIC BUTTONS
+document.querySelectorAll('.btn-p').forEach(btn => {
+  btn.addEventListener('mousemove', e => {
+    const r = btn.getBoundingClientRect();
+    const x = e.clientX - r.left - r.width/2;
+    const y = e.clientY - r.top - r.height/2;
+    btn.style.transform = `translate(${x*.18}px,${y*.3}px) translateY(-2px)`;
+  });
+  btn.addEventListener('mouseleave', () => {
+    btn.style.transform = '';
+  });
+});
+
+// SMOOTH SCROLL
+document.querySelectorAll("a[href^='#']").forEach(a=>a.addEventListener("click",function(e){
+  const t=document.querySelector(this.getAttribute("href"));
+  if(!t)return;e.preventDefault();
+  window.scrollTo({top:t.getBoundingClientRect().top+pageYOffset-80,behavior:"smooth"});
+}));
+
+
+
+</script>
+</body>
+</html>
