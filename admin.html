@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReviewForce — Admin</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#09090f;
+  --surface:#0f0f1a;
+  --border:#1e2035;
+  --green:#22c55e;
+  --green-dim:rgba(34,197,94,0.1);
+  --green-border:rgba(34,197,94,0.2);
+  --text:#e2e4f0;
+  --muted:#6b7280;
+  --subtle:#9ca3af;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* ---- LOGIN ---- */
+#login{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1rem}
+.login-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2.5rem 2rem;width:100%;max-width:360px}
+.login-logo{font-size:18px;font-weight:700;color:#fff;margin-bottom:.3rem}
+.login-logo em{color:var(--green);font-style:normal}
+.login-hint{font-size:12.5px;color:var(--muted);margin-bottom:2rem}
+.lf label{display:block;font-size:12px;font-weight:500;color:var(--subtle);margin-bottom:6px}
+.lf input{width:100%;padding:10px 13px;font-size:14px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:#f0f2ff;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .15s,box-shadow .15s;margin-bottom:1rem}
+.lf input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(34,197,94,0.08)}
+.lbtn{width:100%;padding:11px;background:var(--green);color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s}
+.lbtn:hover{background:#16a34a}
+.lerr{font-size:12px;color:#f87171;margin-top:.75rem;text-align:center;display:none}
+
+/* ---- DASHBOARD ---- */
+#dash{display:none}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:.9rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.top-logo{font-size:16px;font-weight:700;color:#fff}
+.top-logo em{color:var(--green);font-style:normal}
+.top-right{display:flex;align-items:center;gap:1rem}
+.top-badge{font-size:11.5px;font-weight:600;color:var(--green);background:var(--green-dim);border:1px solid var(--green-border);padding:3px 10px;border-radius:12px}
+.logout-btn{font-size:12px;color:var(--muted);background:none;border:1px solid var(--border);border-radius:6px;padding:4px 10px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:color .15s,border-color .15s}
+.logout-btn:hover{color:var(--text);border-color:#374151}
+
+.dash-wrap{max-width:900px;margin:0 auto;padding:2.5rem 1.5rem}
+.page-title{font-size:22px;font-weight:700;color:#fff;letter-spacing:-.4px;margin-bottom:.3rem}
+.page-sub{font-size:13px;color:var(--muted);margin-bottom:2rem}
+
+/* stats row */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:2.5rem}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.1rem 1.25rem}
+.stat-val{font-size:26px;font-weight:700;color:#fff;letter-spacing:-.5px;margin-bottom:2px}
+.stat-label{font-size:11.5px;color:var(--muted);font-weight:500}
+.stat.green .stat-val{color:var(--green)}
+
+/* controls */
+.controls{display:flex;gap:10px;margin-bottom:1.5rem;flex-wrap:wrap;align-items:center}
+.search-wrap{flex:1;min-width:180px;position:relative}
+.search-wrap input{width:100%;padding:8px 12px 8px 34px;font-size:13px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);font-family:'DM Sans',sans-serif;outline:none;transition:border-color .15s}
+.search-wrap input:focus{border-color:var(--green)}
+.search-wrap::before{content:'⌕';position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:16px;pointer-events:none}
+.clear-btn{font-size:12.5px;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:7px;padding:7px 12px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:color .15s}
+.clear-btn:hover{color:#f87171;border-color:rgba(248,113,113,0.3)}
+
+/* empty */
+.empty{text-align:center;padding:4rem 1rem;color:var(--muted)}
+.empty-icon{font-size:40px;margin-bottom:1rem;opacity:.3}
+.empty h3{font-size:15px;font-weight:600;color:var(--subtle);margin-bottom:.4rem}
+.empty p{font-size:13px;line-height:1.6}
+
+/* client cards */
+.client-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.4rem 1.5rem;margin-bottom:12px;transition:border-color .2s}
+.client-card:hover{border-color:#2a2d4a}
+.client-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1rem;gap:12px}
+.client-name{font-size:15.5px;font-weight:700;color:#fff;letter-spacing:-.2px}
+.client-biz{font-size:13px;color:var(--subtle);margin-top:1px}
+.client-badges{display:flex;gap:7px;flex-wrap:wrap;flex-shrink:0}
+.plan-badge{font-size:11px;font-weight:600;padding:3px 9px;border-radius:10px;white-space:nowrap}
+.plan-starter{background:rgba(99,102,241,0.12);color:#818cf8;border:1px solid rgba(99,102,241,0.2)}
+.plan-premium{background:var(--green-dim);color:var(--green);border:1px solid var(--green-border)}
+.time-badge{font-size:11px;color:var(--muted);background:#0a0a0f;border:1px solid var(--border);padding:3px 9px;border-radius:10px;font-family:'DM Mono',monospace;white-space:nowrap}
+
+.client-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.info-block{background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:10px 12px}
+.info-label{font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#374151;margin-bottom:4px}
+.info-val{font-size:13px;color:var(--text);line-height:1.5;word-break:break-word}
+.info-val.mono{font-family:'DM Mono',monospace;font-size:12.5px;color:var(--green)}
+.info-block.full{grid-column:1/-1}
+
+.del-btn{font-size:11px;color:#6b7280;background:none;border:1px solid transparent;border-radius:5px;padding:4px 8px;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:.75rem;transition:color .15s,border-color .15s}
+.del-btn:hover{color:#f87171;border-color:rgba(248,113,113,0.3)}
+
+@media(max-width:560px){
+  .stats{grid-template-columns:1fr 1fr}
+  .client-grid{grid-template-columns:1fr}
+  .client-top{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="login">
+  <div class="login-box">
+    <div class="login-logo">Review<em>Force</em></div>
+    <p class="login-hint">Admin access only</p>
+    <div class="lf">
+      <label>Password</label>
+      <input type="password" id="pw" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()"/>
+      <button class="lbtn" onclick="doLogin()">Sign in →</button>
+      <p class="lerr" id="lerr">Incorrect password</p>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dash">
+  <div class="topbar">
+    <div class="top-logo">Review<em>Force</em></div>
+    <div class="top-right">
+      <span class="top-badge" id="count-badge">0 clients</span>
+      <button class="logout-btn" onclick="logout()">Sign out</button>
+    </div>
+  </div>
+
+  <div class="dash-wrap">
+    <div class="page-title">Client Dashboard</div>
+    <p class="page-sub">Everyone who's signed up and filled out the onboarding form.</p>
+
+    <div class="stats">
+      <div class="stat green"><div class="stat-val" id="s-total">0</div><div class="stat-label">Total clients</div></div>
+      <div class="stat"><div class="stat-val" id="s-starter">0</div><div class="stat-label">Starter plan</div></div>
+      <div class="stat"><div class="stat-val" id="s-premium">0</div><div class="stat-label">Premium plan</div></div>
+    </div>
+
+    <div class="controls">
+      <div class="search-wrap"><input type="text" id="search" placeholder="Search by name, business or email..." oninput="render()"/></div>
+      <button class="clear-btn" onclick="clearAll()">🗑 Clear all data</button>
+    </div>
+
+    <div id="list"></div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// CHANGE THIS PASSWORD TO WHATEVER YOU WANT
+// ============================================================
+const PASSWORD = 'reviewforce2025';
+// ============================================================
+
+function doLogin(){
+  const val = document.getElementById('pw').value;
+  if(val === PASSWORD){
+    sessionStorage.setItem('rf_auth','1');
+    document.getElementById('login').style.display='none';
+    document.getElementById('dash').style.display='block';
+    render();
+  } else {
+    document.getElementById('lerr').style.display='block';
+    document.getElementById('pw').value='';
+    document.getElementById('pw').focus();
+  }
+}
+
+function logout(){
+  sessionStorage.removeItem('rf_auth');
+  location.reload();
+}
+
+// Check if already logged in this session
+if(sessionStorage.getItem('rf_auth')==='1'){
+  document.getElementById('login').style.display='none';
+  document.getElementById('dash').style.display='block';
+}
+
+function getData(){
+  try{ return JSON.parse(localStorage.getItem('rf_clients')||'[]'); }
+  catch(e){ return []; }
+}
+
+function render(){
+  const all = getData();
+  const q = (document.getElementById('search')?.value||'').toLowerCase();
+  const filtered = q ? all.filter(c=>
+    (c.fname+' '+c.lname+' '+c.bname+' '+c.email+' '+c.gbp).toLowerCase().includes(q)
+  ) : all;
+
+  // stats
+  document.getElementById('s-total').textContent = all.length;
+  document.getElementById('s-starter').textContent = all.filter(c=>c.plan&&c.plan.includes('Starter')).length;
+  document.getElementById('s-premium').textContent = all.filter(c=>c.plan&&c.plan.includes('Premium')).length;
+  document.getElementById('count-badge').textContent = all.length + (all.length===1?' client':' clients');
+
+  const list = document.getElementById('list');
+
+  if(filtered.length===0){
+    list.innerHTML = `<div class="empty"><div class="empty-icon">📭</div><h3>${all.length===0?'No clients yet':'No results'}</h3><p>${all.length===0?'When a client fills out the onboarding form, they\'ll appear here.':'Try a different search term.'}</p></div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(c => `
+    <div class="client-card" id="card-${c.id}">
+      <div class="client-top">
+        <div>
+          <div class="client-name">${esc(c.fname)} ${esc(c.lname)}</div>
+          <div class="client-biz">${esc(c.bname)}</div>
+        </div>
+        <div class="client-badges">
+          <span class="plan-badge ${c.plan&&c.plan.includes('Premium')?'plan-premium':'plan-starter'}">${esc(c.plan||'Unknown')}</span>
+          <span class="time-badge">${esc(c.at||'')}</span>
+        </div>
+      </div>
+      <div class="client-grid">
+        <div class="info-block">
+          <div class="info-label">Email</div>
+          <div class="info-val mono">${esc(c.email)}</div>
+        </div>
+        <div class="info-block">
+          <div class="info-label">Tone</div>
+          <div class="info-val">${esc(c.tone)}</div>
+        </div>
+        <div class="info-block full">
+          <div class="info-label">Google Business Profile</div>
+          <div class="info-val">${esc(c.gbp)}</div>
+        </div>
+        <div class="info-block full">
+          <div class="info-label">About the business</div>
+          <div class="info-val">${esc(c.desc)}</div>
+        </div>
+        <div class="info-block full">
+          <div class="info-label">Special notes / instructions</div>
+          <div class="info-val">${esc(c.notes)}</div>
+        </div>
+      </div>
+      <button class="del-btn" onclick="del(${c.id})">Remove this client</button>
+    </div>
+  `).join('');
+}
+
+function del(id){
+  if(!confirm('Remove this client from the dashboard?')) return;
+  const all = getData().filter(c=>c.id!==id);
+  localStorage.setItem('rf_clients',JSON.stringify(all));
+  render();
+}
+
+function clearAll(){
+  if(!confirm('Delete ALL client data? This cannot be undone.')) return;
+  localStorage.removeItem('rf_clients');
+  render();
+}
+
+function esc(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// Only render dashboard if logged in
+if(sessionStorage.getItem('rf_auth')==='1') render();
+</script>
+</body>
+</html>
