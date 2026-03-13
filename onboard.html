@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReviewForce — Client Onboarding</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a0f; color: #e5e7eb; line-height: 1.6; }
+  .container { max-width: 680px; margin: 0 auto; padding: 3rem 1.5rem; }
+  .logo { font-size: 20px; font-weight: 600; color: #fff; margin-bottom: 2.5rem; }
+  .logo span { color: #22c55e; }
+  .thanks-badge { display: inline-block; background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.3); color: #22c55e; font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 20px; margin-bottom: 1rem; }
+  .hero h1 { font-size: 28px; font-weight: 600; color: #fff; margin-bottom: 0.75rem; line-height: 1.3; }
+  .hero p { font-size: 15px; color: #9ca3af; margin-bottom: 2.5rem; }
+  .section-label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #6b7280; margin-bottom: 1.25rem; }
+  .steps { margin-bottom: 3rem; }
+  .step { display: flex; gap: 18px; margin-bottom: 1.5rem; }
+  .step-num { width: 32px; height: 32px; border-radius: 50%; background: #22c55e; color: #fff; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+  .step-body h3 { font-size: 16px; font-weight: 600; color: #f9fafb; margin-bottom: 6px; }
+  .step-body p { font-size: 14px; color: #9ca3af; }
+  .step-box { background: #13131a; border: 1px solid #1f2937; border-left: 3px solid #22c55e; border-radius: 8px; padding: 14px 16px; margin-top: 12px; font-size: 13px; color: #d1d5db; line-height: 1.8; }
+  .step-box b { color: #f9fafb; font-weight: 600; }
+  .form-card { background: #111118; border: 1px solid #1f2937; border-radius: 12px; padding: 2rem; margin-bottom: 3rem; }
+  .form-card h2 { font-size: 18px; font-weight: 600; color: #fff; margin-bottom: 0.25rem; }
+  .form-card .sub { font-size: 13px; color: #6b7280; margin-bottom: 1.75rem; }
+  .field { margin-bottom: 1.25rem; }
+  .field label { display: block; font-size: 13px; font-weight: 500; color: #9ca3af; margin-bottom: 7px; }
+  .field input, .field select, .field textarea { width: 100%; padding: 10px 14px; font-size: 14px; border: 1px solid #1f2937; border-radius: 8px; background: #0d0d14; color: #f9fafb; font-family: inherit; outline: none; transition: border-color 0.15s; }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,0.1); }
+  .field textarea { resize: vertical; min-height: 90px; }
+  .field select option { background: #0d0d14; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .btn { width: 100%; padding: 13px; background: #22c55e; color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit; margin-top: 0.75rem; transition: background 0.15s; }
+  .btn:hover { background: #16a34a; }
+  .success { display: none; text-align: center; padding: 3rem 1rem; }
+  .tick { width: 60px; height: 60px; border-radius: 50%; background: rgba(34,197,94,0.15); border: 2px solid #22c55e; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem; font-size: 24px; }
+  .success h2 { font-size: 22px; font-weight: 600; color: #fff; margin-bottom: 0.5rem; }
+  .success p { font-size: 14px; color: #9ca3af; }
+  .faq { margin-bottom: 2.5rem; }
+  .faq-item { border-bottom: 1px solid #1f2937; }
+  .faq-item:last-child { border-bottom: none; }
+  .faq-q { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; cursor: pointer; font-size: 14px; font-weight: 500; color: #e5e7eb; }
+  .faq-q:hover { color: #fff; }
+  .faq-a { font-size: 13px; color: #9ca3af; line-height: 1.7; padding-bottom: 1rem; display: none; }
+  .faq-a.open { display: block; }
+  .chevron { color: #4b5563; font-size: 11px; transition: transform 0.2s; }
+  .chevron.open { transform: rotate(180deg); }
+  .footer-bar { background: #111118; border: 1px solid #1f2937; border-radius: 10px; padding: 1rem 1.25rem; display: flex; align-items: center; justify-content: space-between; font-size: 13px; flex-wrap: wrap; gap: 8px; }
+  .footer-bar span { color: #6b7280; }
+  .footer-bar a { color: #22c55e; text-decoration: none; font-weight: 500; }
+  @media (max-width: 480px) { .field-row { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="logo">Review<span>Force</span></div>
+
+  <div class="hero">
+    <div class="thanks-badge">Payment confirmed ✓</div>
+    <h1>Welcome to ReviewForce — let's get you set up.</h1>
+    <p>Thanks for signing up! You're just a few steps away from having every Google review replied to automatically. Follow the steps below, fill in the short form, and we'll have everything live within 24 hours.</p>
+  </div>
+
+  <div class="steps">
+    <div class="section-label">Getting started</div>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h3>Add ReviewForce as a manager on your Google Business Profile</h3>
+        <p>This is the only technical step. It takes about 2 minutes and you never share your password.</p>
+        <div class="step-box">
+          <b>Step by step:</b><br>
+          1. Go to <b>business.google.com</b> and sign in<br>
+          2. Click your business name → then <b>Settings</b> in the left menu<br>
+          3. Click <b>Managers</b> → then <b>Add manager</b><br>
+          4. Enter this email: <b>reviewforce.business@gmail.com</b><br>
+          5. Set the role to <b>Manager</b> and click <b>Invite</b><br><br>
+          That's it — you'll get a confirmation email when we accept.
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h3>Fill out the setup form below</h3>
+        <p>Tell us how you want to sound and a bit about your business. The more detail you give, the more personalised your replies will be.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h3>We go live within 24 hours</h3>
+        <p>Once we receive your invite and your form submission, we'll connect everything and send you a confirmation email. From that point, every new review gets a reply automatically.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-card" id="form-card">
+    <h2>Setup form</h2>
+    <p class="sub">Fill this out so we can configure your account correctly.</p>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Your first name *</label>
+        <input type="text" id="fname" placeholder="e.g. Sarah" />
+      </div>
+      <div class="field">
+        <label>Your last name *</label>
+        <input type="text" id="lname" placeholder="e.g. Johnson" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Business name *</label>
+      <input type="text" id="bname" placeholder="e.g. Sunrise Cafe" />
+    </div>
+
+    <div class="field">
+      <label>Your email address *</label>
+      <input type="email" id="email" placeholder="you@yourbusiness.com.au" />
+    </div>
+
+    <div class="field">
+      <label>Google Business Profile name (exactly as it appears on Google) *</label>
+      <input type="text" id="gbp" placeholder="e.g. Sunrise Cafe Melbourne" />
+    </div>
+
+    <div class="field">
+      <label>What tone would you like for your replies? *</label>
+      <select id="tone">
+        <option value="">Select a tone...</option>
+        <option>Warm and friendly</option>
+        <option>Professional and formal</option>
+        <option>Casual and relaxed</option>
+        <option>Friendly but professional</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Describe your business in a sentence or two *</label>
+      <textarea id="desc" placeholder="e.g. We're a family-run Italian restaurant in Richmond. We've been open for 8 years and specialise in wood-fired pizza and fresh pasta. Our customers are mostly locals and young professionals."></textarea>
+    </div>
+
+    <div class="field">
+      <label>Anything specific to mention or avoid in replies? (optional)</label>
+      <textarea id="notes" placeholder="e.g. Always mention our loyalty card program. Never discuss pricing. We prefer to sign off as 'The team at Sunrise' rather than just 'Sunrise'. For 1-star reviews, keep it empathetic and offer to follow up offline."></textarea>
+    </div>
+
+    <div class="field">
+      <label>Which plan are you on? *</label>
+      <select id="plan">
+        <option value="">Select your plan...</option>
+        <option>Starter — $99.99/mo</option>
+        <option>Premium — $119.99/mo (3-day free trial)</option>
+      </select>
+    </div>
+
+    <button class="btn" onclick="submitForm()">Submit setup form →</button>
+  </div>
+
+  <div class="success" id="success">
+    <div class="tick">✓</div>
+    <h2>You're all set!</h2>
+    <p>We've received your details and will have your account live within 24 hours.<br>We'll send a confirmation to your email when everything's connected.</p>
+  </div>
+
+  <div class="faq">
+    <div class="section-label">Common questions</div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggle(this)">Do I need to share my Google password? <span class="chevron">▼</span></div>
+      <div class="faq-a">No. You add us as a Manager on your Google Business Profile — this never requires sharing your password. You keep full ownership and can remove us at any time from your Google account settings.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggle(this)">Will my customers know it's AI? <span class="chevron">▼</span></div>
+      <div class="faq-a">No. Replies post directly from your Google account under your business name. There's no mention of ReviewForce or AI anywhere visible to customers.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggle(this)">Can I edit a reply after it posts? <span class="chevron">▼</span></div>
+      <div class="faq-a">Yes. Since replies post from your own Google account, you can log into Google Business Profile and edit or delete any reply whenever you like.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggle(this)">How quickly will it go live? <span class="chevron">▼</span></div>
+      <div class="faq-a">Once you've added us as a manager and submitted this form, we'll have everything connected within 24 hours. You'll get a confirmation email when it's live.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggle(this)">How do I cancel? <span class="chevron">▼</span></div>
+      <div class="faq-a">Cancel anytime through your Whop account — it takes about 30 seconds. No lock-in contracts, no cancellation fees. Your subscription simply won't renew after the current billing period.</div>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <span>Questions? We're happy to help.</span>
+    <a href="mailto:reviewforce.business@gmail.com">reviewforce.business@gmail.com</a>
+  </div>
+</div>
+
+<script>
+function submitForm() {
+  const required = ['fname','lname','bname','email','gbp','tone','desc','plan'];
+  for (const id of required) {
+    if (!document.getElementById(id).value.trim()) {
+      alert('Please fill out all required fields before submitting.');
+      document.getElementById(id).focus();
+      return;
+    }
+  }
+  document.getElementById('form-card').style.display = 'none';
+  document.getElementById('success').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function toggle(el) {
+  const a = el.nextElementSibling;
+  const c = el.querySelector('.chevron');
+  a.classList.toggle('open');
+  c.classList.toggle('open');
+}
+</script>
+</body>
+</html>
